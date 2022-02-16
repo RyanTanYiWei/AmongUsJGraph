@@ -1,37 +1,45 @@
 # Connectivity Graph to understand Topological Steps within Among Us' Skeld Map
 
-## Convex Map
+# Analysis
 
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+## 1 Comparison of Layouts
 
-## Analysis
+## 1a Default (Jgraph)
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/1a%20default-jgraph.jpg)
 
-### 1 Comparison of Layouts
+## 1b Default (Kamada Kawai)
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/1b%20default-kk.jpg)
 
-### 1a Default (Jgraph)
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+## 2 Comparisons with and without vents
 
-### 1b Default (Kamada Kawai)
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+### 2a Default (Jgraph)
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/2a%20default-jgraph.jpg)
 
-### 2 Comparisons with and without vents
+### 2b Imposter (Jgraph)
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/2b%20imposter-jgraph.jpg)
 
-#### 2a Default (Jgraph)
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+## 3 Understanding Sabotages
 
-#### 2b Imposter (Jgraph)
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+### 3a Default (Jgraph) | Sabotage Rooms are coloured
+<p float="left">
+<img height = "400" src=https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/3a1%20default-jgraph_FixLights.jpg/>
+<img height = "400" src=https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/3a2%20default-jgraph_CommsSabotage.jpg/>
+</p>
+<p float="left">
+<img height = "400" src=https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/3a3%20default-jgraph_jgraph%20-%20OxygenDepletion.jpg/>
+<img height = "400" src=https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/3a4%20default-jgraph_ReactorMeltdown.jpg/>
+</p>
 
-### 3 Understanding Sabotages
+### 3b Default (Radial Tree) | Sabotage Rooms are coloured
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/3c%20default-radialtree-sabotages.jpg)
 
-#### 3a Default (Jgraph) | Sabotage Rooms are coloured
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+### 3c Default (Kamada Kawai) | Sabotage Rooms are coloured
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/3c%20default-kk-sabotages.jpg)
 
-#### 3b Default (Radial Tree) | Sabotage Rooms are coloured
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+## 4 How many topological steps saved from venting?
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/steps-saved-from-each-vent.jpg)
 
-#### 3c Default (Kamada Kawai) | Sabotage Rooms are coloured
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
 
-### 4 How many topological steps saved from venting?
-![Visual](https://github.com/RyanTanYiWei/HawkerTimings/blob/main/Hawker%20Centres.JPG)
+# Convex Map
+
+![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/ConvexMap.png)
