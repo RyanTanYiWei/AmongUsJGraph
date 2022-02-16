@@ -1,0 +1,417 @@
+---
+title: "Among Us JGraph"
+output: rmarkdown::github_document
+---
+
+## List of Diagrams
+
+1) Comparison of Layouts
++ Default (Jgraph)
++ Default (Kamada Kawai)
+
+2) Comparisons with and without vents
++ Default (Jgraph)
++ Imposter (Jgraph)
+
+3) Understanding Sabotages
++ Default (Jgraph) | Sabotage Rooms are coloured
+    ++ Rootnode: (a) Lights (b) Comms (c) O2 (d) Reactor
++ Default (Radial Tree) | Sabotage Rooms are coloured
++ Default (Kamada Kawai) | Sabotage Rooms are coloured
+
+Clear 
+```{r}
+rm(list = ls())
+```
+
+Library
+```{r include=FALSE}
+library(xml2)
+library(rvest)
+library(tidyverse)  
+library(stringr)   
+library(lubridate)
+library(data.table)
+library(network)
+library(sjmisc)
+library(igraph)
+connect = read.csv("Data/skeldmap.csv")
+
+#Two Edge List - With Vents and Without Vents
+withoutVents = connect %>% filter(vents == 0)
+withVents = connect
+```
+
+## 1 Comparison of Layouts
+
+### 1a Default (Jgraph)
+```{r}
+tiff(filename="Diagrams/1a default-jgraph.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g1 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g1,flip.y=TRUE,root= "Cafeteria")
+#Edge Color
+E(g1)$color[E(g1)$vents == 0] <- 'green'
+
+#Node Color
+index = grep("Hallway",V(g1)$name)
+V(g1)$color<-"green"
+V(g1)[index]$color<-"red"
+
+#Plot
+plot(g1, layout=l, vertex.size=3, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+### 1b Default (KK)
+```{r}
+tiff(filename="Diagrams/1b default-kk.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g1 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g1,flip.y=TRUE,root= "Cafeteria")
+#Edge Color
+E(g1)$color[E(g1)$vents == 0] <- 'green'
+
+#Node Color
+
+#Node Color
+index = grep("Hallway",V(g1)$name)
+V(g1)$color<-"green"
+V(g1)[index]$color<-"red"
+
+#Plot
+plot(g1, layout=layout_with_kk, vertex.size=3,  vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+
+## 2 Comparisons with and without vents
+
+### 2a Default (Jgraph)
+```{r}
+tiff(filename="Diagrams/2a default-jgraph.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g1 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g1,flip.y=TRUE,root= "Cafeteria")
+#Edge Color
+E(g1)$color[E(g1)$vents == 0] <- 'green'
+
+#Node Color
+index = grep("Hallway",V(g1)$name)
+V(g1)$color<-"green"
+V(g1)[index]$color<-"red"
+
+#Plot
+plot(g1, layout=l, vertex.size=3, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+### 2b Imposter (Jgraph)
+```{r}
+tiff(filename="Diagrams/2b imposter-jgraph.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g2 <- graph_from_data_frame(d=withVents,directed = FALSE)
+l = layout_as_tree(g2,flip.y=TRUE,root= "Cafeteria")
+#Edge Color
+E(g2)$color[E(g2)$vents == 0] <- 'green'
+E(g2)$color[E(g2)$vents != 0] <- 'orange'
+#Node Color
+index = grep("Hallway",V(g2)$name)
+V(g2)$color<-"green"
+V(g2)[index]$color<-"red"
+#Plot
+plot(g2, layout=l, vertex.size=3, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+
+## 3 Understanding Sabotages
+
+### 3a Default (Jgraph) | Sabotage Rooms are coloured
+3a1 Fix Lights; Root = Electrical
+```{r, fig.width = 25, fig.length = 4, fig.asp = .62}
+
+tiff(filename="Diagrams/3a1 default-jgraph_FixLights.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g0 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g0,flip.y=TRUE,root= "Electrical 2")
+#Edge Color
+E(g0)$color[E(g0)$vents == 0] <- 'green'
+#Node Color
+index = grep("Hallway",V(g0)$name)
+V(g0)$color<-"green"
+
+index = grep("Communications",V(g1)$name)
+V(g0)[index]$color<-"red"
+index = grep("Electrical 2",V(g1)$name)
+V(g0)[index]$color<-"violetred"
+index = grep("Reactor 2",V(g1)$name)
+V(g0)[index]$color<-"Purple"
+index = grep("O2",V(g1)$name)
+V(g0)[index]$color<-"orange"
+
+name_df = data.frame(V(g1)$name) %>%
+  mutate(size=3 )
+
+name_df[grep("Communications", name_df$V.g1..name),]$size = 5
+name_df[grep("Electrical 2", name_df$V.g1..name),]$size = 5
+name_df[grep("Reactor 2", name_df$V.g1..name),]$size = 5
+name_df[grep("O2", name_df$V.g1..name),]$size = 5
+
+node.size<-setNames(name_df$size,name_df$V.g1..name)
+
+#Plot
+plot(g0, layout=l, vertex.size=node.size, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+3a2 Comms Sabotage; Root = Communications
+```{r, fig.width = 25, fig.length = 4, fig.asp = .62}
+
+tiff(filename="Diagrams/3a2 default-jgraph_CommsSabotage.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g0 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g0,flip.y=TRUE,root= "Communications")
+#Edge Color
+E(g0)$color[E(g0)$vents == 0] <- 'green'
+#Node Color
+index = grep("Hallway",V(g0)$name)
+V(g0)$color<-"green"
+
+index = grep("Communications",V(g1)$name)
+V(g0)[index]$color<-"red"
+index = grep("Electrical 2",V(g1)$name)
+V(g0)[index]$color<-"violetred"
+index = grep("Reactor 2",V(g1)$name)
+V(g0)[index]$color<-"Purple"
+index = grep("O2",V(g1)$name)
+V(g0)[index]$color<-"orange"
+
+name_df = data.frame(V(g1)$name) %>%
+  mutate(size=3 )
+
+name_df[grep("Communications", name_df$V.g1..name),]$size = 5
+name_df[grep("Electrical 2", name_df$V.g1..name),]$size = 5
+name_df[grep("Reactor 2", name_df$V.g1..name),]$size = 5
+name_df[grep("O2", name_df$V.g1..name),]$size = 5
+
+node.size<-setNames(name_df$size,name_df$V.g1..name)
+
+#Plot
+plot(g0, layout=l, vertex.size=node.size, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+3a3 Oxygen Depletion; Root = O2
+```{r, fig.width = 25, fig.length = 4, fig.asp = .62}
+
+tiff(filename="Diagrams/3a3 default-jgraph_jgraph - OxygenDepletion.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g0 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g0,flip.y=TRUE,root= "O2")
+#Edge Color
+E(g0)$color[E(g0)$vents == 0] <- 'green'
+#Node Color
+index = grep("Hallway",V(g0)$name)
+V(g0)$color<-"green"
+
+index = grep("Communications",V(g1)$name)
+V(g0)[index]$color<-"red"
+index = grep("Electrical 2",V(g1)$name)
+V(g0)[index]$color<-"violetred"
+index = grep("Reactor 2",V(g1)$name)
+V(g0)[index]$color<-"Purple"
+index = grep("O2",V(g1)$name)
+V(g0)[index]$color<-"orange"
+
+name_df = data.frame(V(g1)$name) %>%
+  mutate(size=3 )
+
+name_df[grep("Communications", name_df$V.g1..name),]$size = 5
+name_df[grep("Electrical 2", name_df$V.g1..name),]$size = 5
+name_df[grep("Reactor 2", name_df$V.g1..name),]$size = 5
+name_df[grep("O2", name_df$V.g1..name),]$size = 5
+
+node.size<-setNames(name_df$size,name_df$V.g1..name)
+
+#Plot
+plot(g0, layout=l, vertex.size=node.size, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+3a4 Reactor Meltdown; Root = Reactor2
+```{r, fig.width = 25, fig.length = 4, fig.asp = .62}
+
+tiff(filename="Diagrams/3a4 default-jgraph_ReactorMeltdown.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g0 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g0,flip.y=TRUE,root= "Reactor 2")
+#Edge Color
+E(g0)$color[E(g0)$vents == 0] <- 'green'
+#Node Color
+index = grep("Hallway",V(g0)$name)
+V(g0)$color<-"green"
+
+
+index = grep("Communications",V(g1)$name)
+V(g0)[index]$color<-"red"
+index = grep("Electrical 2",V(g1)$name)
+V(g0)[index]$color<-"violetred"
+index = grep("Reactor 2",V(g1)$name)
+V(g0)[index]$color<-"Purple"
+index = grep("O2",V(g1)$name)
+V(g0)[index]$color<-"orange"
+
+name_df = data.frame(V(g1)$name) %>%
+  mutate(size=3 )
+
+name_df[grep("Communications", name_df$V.g1..name),]$size = 5
+name_df[grep("Electrical 2", name_df$V.g1..name),]$size = 5
+name_df[grep("Reactor 2", name_df$V.g1..name),]$size = 5
+name_df[grep("O2", name_df$V.g1..name),]$size = 5
+
+node.size<-setNames(name_df$size,name_df$V.g1..name)
+
+#Plot
+plot(g0, layout=l, vertex.size=node.size, vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+
+### 3b Default (Radial Tree) | Sabotage Rooms are coloured
+```{r, fig.width = 25, fig.length = 4, fig.asp = .62}
+tiff(filename="Diagrams/3c default-radialtree-sabotages.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g0 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+l = layout_as_tree(g1,flip.y=TRUE,circular = TRUE, root= "Cafeteria")
+
+#Edge Color
+E(g0)$color[E(g0)$vents == 0] <- 'green'
+#Node Color
+index = grep("Hallway",V(g0)$name)
+V(g0)$color<-"green"
+
+index = grep("Cafeteria",V(g1)$name)
+V(g0)[index]$color<-"black"
+index = grep("Communications",V(g1)$name)
+V(g0)[index]$color<-"red"
+index = grep("Electrical 2",V(g1)$name)
+V(g0)[index]$color<-"violetred"
+index = grep("Reactor 2",V(g1)$name)
+V(g0)[index]$color<-"Purple"
+index = grep("O2",V(g1)$name)
+V(g0)[index]$color<-"orange"
+
+name_df = data.frame(V(g0)$name) %>%
+  mutate(size=3)
+
+
+name_df[grep("Cafeteria", name_df$V.g0..name),]$size = 5
+name_df[grep("Communications", name_df$V.g0..name),]$size = 5
+name_df[grep("Electrical 2", name_df$V.g0..name),]$size = 5
+name_df[grep("Reactor 2", name_df$V.g0..name),]$size = 5
+name_df[grep("O2", name_df$V.g0..name),]$size = 5
+
+node.size<-setNames(name_df$size,name_df$V.g1..name)
+
+#Plot
+plot(g0, layout=l, vertex.size=node.size,  vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+
+### 3c Default (Kamada Kawai) | Sabotage Rooms are coloured
+```{r, fig.width = 25, fig.length = 4, fig.asp = .62}
+tiff(filename="Diagrams/3c default-kk-sabotages.tiff", width=5, height=5, units="in",
+     pointsize=4, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+g0 <- graph_from_data_frame(d=withoutVents,directed = FALSE)
+
+#Edge Color
+E(g0)$color[E(g0)$vents == 0] <- 'green'
+#Node Color
+index = grep("Hallway",V(g0)$name)
+V(g0)$color<-"green"
+
+index = grep("Cafeteria",V(g1)$name)
+V(g0)[index]$color<-"black"
+index = grep("Communications",V(g1)$name)
+V(g0)[index]$color<-"red"
+index = grep("Electrical 2",V(g1)$name)
+V(g0)[index]$color<-"violetred"
+index = grep("Reactor 2",V(g1)$name)
+V(g0)[index]$color<-"Purple"
+index = grep("O2",V(g1)$name)
+V(g0)[index]$color<-"orange"
+
+name_df = data.frame(V(g0)$name) %>%
+  mutate(size=3)
+
+
+name_df[grep("Cafeteria", name_df$V.g0..name),]$size = 5
+name_df[grep("Communications", name_df$V.g0..name),]$size = 5
+name_df[grep("Electrical 2", name_df$V.g0..name),]$size = 5
+name_df[grep("Reactor 2", name_df$V.g0..name),]$size = 5
+name_df[grep("O2", name_df$V.g0..name),]$size = 5
+
+node.size<-setNames(name_df$size,name_df$V.g1..name)
+
+#Plot
+plot(g0, layout=layout_with_kk, vertex.size=node.size,  vertex.label.family="", vertex.label.dist=0.7, vertex.label.degree=90)
+
+dev.off()
+```
+
+
+
+#### How many topological steps does the Vent Save?
+```{r}
+library(rsppfp)
+
+Vents = withVents %>% filter(vents !=0)%>% select(-one_of(c("weight")))%>% select(-one_of(c("directed")))
+
+for (i in 1: nrow(Vents)){
+  Vents$steps[i] = shortest.paths(g1, paste(Vents$source[i]), paste(Vents$target[i]) )[1]
+}
+Vents
+```
+
+```{r}
+tiff(filename="Diagrams/steps-saved-from-each-vent.tiff", width=5, height=5, units="in",
+     pointsize=10, compression="lzw", bg="white", res=1200,
+     restoreConsole=TRUE)
+
+Steps_Saved = Vents[3:4]$steps
+hist(Steps_Saved)
+#ggplot(DF, aes(x=vents,y=steps) ) + geom_point(shape=1,size=4) 
+
+dev.off()
+```
