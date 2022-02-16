@@ -1,4 +1,4 @@
-# Connectivity Graph to understand Topological Steps within Among Us' Skeld Map
+# Topological Analysis in Among Us' Skeld Map
 
 ## 1 Comparison of Layouts
 
