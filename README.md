@@ -1,13 +1,11 @@
 # Connectivity Graph to understand Topological Steps within Among Us' Skeld Map
 
-# Analysis
-
 ## 1 Comparison of Layouts
 
-## 1a Default (Jgraph)
+### 1a Default (Jgraph)
 ![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/1a%20default-jgraph.jpg)
 
-## 1b Default (Kamada Kawai)
+### 1b Default (Kamada Kawai)
 ![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/1b%20default-kk.jpg)
 
 ## 2 Comparisons with and without vents
@@ -40,6 +38,6 @@
 ![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/jpeg%20for%20readme/steps-saved-from-each-vent.jpg)
 
 
-# Convex Map
+## Convex Map
 
 ![Visual](https://github.com/RyanTanYiWei/AmongUsJGraph/blob/main/External%20Diagrams/ConvexMap.png)
