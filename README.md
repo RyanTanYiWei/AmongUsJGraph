@@ -1,4 +1,4 @@
-# Topological Analysis in Among Us' Skeld Map
+# Topological Analysis of Among Us' Skeld Map
 
 ## 1 Comparison of Layouts
 
